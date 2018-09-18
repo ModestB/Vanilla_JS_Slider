@@ -5,10 +5,10 @@ const addSlideStyle = function(slideIndex, slides, delay){
     slide.style.display = "block";
     slide.style.animationName = "slideRightFadeIn";
     //slide.style.animationDuration = `${delay/1000}s`;
-    slide.style.animationDuration ='2s';
+    slide.style.animationDuration =`${delay/1000}s`;
 }
 
-function removeStyle(slideIndex, slides, delay) {
+function removeStyle(slideIndex, slides) {
     const slidesArray = Array.from(slides);
     let slide = slidesArray[slideIndex];
 
@@ -51,9 +51,10 @@ let sliderWidget = {
     settings: {
         slideIndex : 0,
         slides : document.getElementsByClassName("slide"),
-        delay : 10000,
+        animDuration : 1000,
         animOn: false,
-        changeSlideInterval : () => {},
+        mainCycle : () => {},
+        mainCycleInterval: 10000,
 
     },
 
@@ -65,36 +66,31 @@ let sliderWidget = {
     },
 
     initializeSlides: function(){
-        addSlideStyle(
-            mainSettings.slideIndex,
-            mainSettings.slides, 
-            mainSettings.delay/2
-        );
+        addSlideStyle(mainSettings.slideIndex, mainSettings.slides, mainSettings.animDuration);
         checkCircle(mainSettings.slideIndex);
     },
 
     startAnimation: function(){
         mainSettings.animOn = true;
         let slides = mainSettings.slides;
-        let delay = mainSettings.delay;
+        let animDuration = mainSettings.animDuration;
+        let cycleInterval = mainSettings.mainCycleInterval;
         
         console.log('START----')
-        mainSettings.changeSlideInterval = setInterval(() => {
+        mainSettings.mainCycle = setInterval(() => {
             let index  = mainSettings.slideIndex;
-            removeStyle(index, slides, delay/2)
-
+            removeStyle(index, slides)
             index = increaseIndex(index, slides.length)  
             mainSettings.slideIndex = index;                
-            addSlideStyle(index, slides, delay/2);
+            addSlideStyle(index, slides, animDuration);
             checkCircle(mainSettings.slideIndex);
-        }, delay)
+        }, cycleInterval)
     },
 
     stopAnimation: function() {
         mainSettings.animOn = false;
         console.log("----STOP")
-        clearInterval(mainSettings.changeSlideInterval);
-
+        clearInterval(mainSettings.mainCycle);
     },
 
     initializeButton : function() {
@@ -106,7 +102,7 @@ let sliderWidget = {
             dot.addEventListener('click', (e) => {
                 e.preventDefault()
                 this.stopAnimation()
-                removeStyle(mainSettings.slideIndex, mainSettings.slides, mainSettings.delay/2)
+                removeStyle(mainSettings.slideIndex, mainSettings.slides)
                 mainSettings.slideIndex = index;
                 this.initializeSlides();
                 this.startAnimation();
@@ -117,7 +113,7 @@ let sliderWidget = {
             e.preventDefault();
             console.log(`left index: ${decreaseIndex(mainSettings.slideIndex, mainSettings.slides.length)}` )
             this.stopAnimation();
-            removeStyle(mainSettings.slideIndex, mainSettings.slides, mainSettings.delay/2);
+            removeStyle(mainSettings.slideIndex, mainSettings.slides);
             mainSettings.slideIndex = decreaseIndex(mainSettings.slideIndex, mainSettings.slides.length);
             this.initializeSlides();
             this.startAnimation();
@@ -128,16 +124,14 @@ let sliderWidget = {
             e.preventDefault();
             console.log(`right index: ${increaseIndex(mainSettings.slideIndex, mainSettings.slides.length)}` )
             this.stopAnimation();
-            removeStyle(mainSettings.slideIndex, mainSettings.slides, mainSettings.delay/2);
+            removeStyle(mainSettings.slideIndex, mainSettings.slides);
             mainSettings.slideIndex = increaseIndex(mainSettings.slideIndex, mainSettings.slides.length);
             this.initializeSlides();
             this.startAnimation();
 
         })
-        
-        
+    
     }
-
 }  
 
 
