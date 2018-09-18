@@ -3,9 +3,9 @@ const addSlideStyle = function(slideIndex, slides, delay){
     let slide = slidesArray[slideIndex];
 
     slide.style.display = "block";
-    slide.style.animationName = "fadeIn";
-    slide.style.animationDuration = `${delay/1000}s`;
-
+    slide.style.animationName = "slideRightFadeIn";
+    //slide.style.animationDuration = `${delay/1000}s`;
+    slide.style.animationDuration ='2s';
 }
 
 function removeStyle(slideIndex, slides, delay) {
