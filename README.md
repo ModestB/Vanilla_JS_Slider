@@ -1,5 +1,4 @@
 # Vanilla_JS_Slider
-# Hi!
 
-# This is my playground where I learn to code.
+# This is my take on vanilla JavaScript slider.
 If you find something useful feel free to use :)
