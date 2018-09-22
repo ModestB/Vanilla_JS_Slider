@@ -1,63 +1,3 @@
-// FIND slide that matches index
-// SHOW slide
-// ADD animation and animation duration
-function addSlideStyle (index, slides, duration){
-    const slide = slides[index];
-
-    slide.style.display = "block";
-    slide.style.animationName = "slideRightFadeIn";
-    slide.style.animationDuration =`${duration/1000}s`;
-};
-
-// FIND slide that matches index
-// REMOVE slide
-function removeStyle(index, slides) {
-    const slide = slides[index];
-
-    slide.style.display = "none";
-};
-
-
-// RETURN index increased by 1
-//          then index is less then slides array length
-// ELSE return 0 ---> then index = last slide index
-function increaseIndex(index, length){
-    if (index < length-1){
-        return  ++index;
-    } else {
-        return 0;
-    };
-};
-
-// RETURN index decreased by 1 
-//        then index is greater then 0  
-//        and less then slides array length
-// ELSE return last element index ---> then index = 0
-function decreaseIndex(index, length){
-    if(index > 0 && index < length){
-        return --index;
-    } else {
-        return length-1;
-    };
-};
-
-// CHECK if slideIndex == dotIndex
-//       TRUE changes icon from uncheked to CHECKED
-//       ELSE changes icon from checked to UNCHECKED
-function  checkCircle(slideIndex){
-    const dots = document.querySelectorAll('.slider-dot  i');
-
-    dots.forEach((dot, dotIndex) => {
-        if(dotIndex === slideIndex){
-            dot.classList.remove("icon-radio-unchecked");
-            dot.classList.add("icon-radio-checked2");
-        } else {
-            dot.classList.remove("icon-radio-checked2");
-            dot.classList.add("icon-radio-unchecked");
-        };
-    });
-};
-
 let sliderWidget = {
 
     settings: {
@@ -79,25 +19,23 @@ let sliderWidget = {
     },
 
     initializeSlides: function(){
-        addSlideStyle(this.settings.slideIndex, this.settings.slides, this.settings.animDuration);
-        checkCircle(this.settings.slideIndex);
+        this.addSlideStyle();
+        this.checkCircle();
     },
 
     startAnimation: function(){
         this.settings.animOn = true;
         
-        console.log('START----')
-        this.mainCycle = setInterval(() => {
-            removeStyle(this.settings.slideIndex, this.settings.slides)
-            this.settings.slideIndex = increaseIndex(this.settings.slideIndex, this.settings.slides.length)                  
-            addSlideStyle(this.settings.slideIndex, this.settings.slides, this.settings.animDuration);
-            checkCircle(this.settings.slideIndex);
+        this.settings.mainCycle = setInterval(() => {
+            this.removeStyle();
+            this.increaseIndex()                  
+            this.addSlideStyle();
+            this.checkCircle();
         }, this.settings.mainCycleInterval)
     },
 
     stopAnimation: function() {
         this.settings.animOn = false;
-        console.log("----STOP")
         clearInterval(this.settings.mainCycle);
     },
 
@@ -108,9 +46,9 @@ let sliderWidget = {
 
         dots.forEach((dot, index) => {
             dot.addEventListener('click', (e) => {
-                e.preventDefault()
-                this.stopAnimation()
-                removeStyle(this.settings.slideIndex, this.settings.slides)
+                e.preventDefault();
+                this.stopAnimation();
+                this.removeStyle();
                 this.settings.slideIndex = index;
                 this.initializeSlides();
                 this.startAnimation();
@@ -120,8 +58,8 @@ let sliderWidget = {
         leftArrow.addEventListener('click', (e) => {
             e.preventDefault();
             this.stopAnimation();
-            removeStyle(this.settings.slideIndex, this.settings.slides);
-            this.settings.slideIndex = decreaseIndex(this.settings.slideIndex, this.settings.slides.length);
+            this.removeStyle();
+            this.decreaseIndex();
             this.initializeSlides();
             this.startAnimation();
 
@@ -130,12 +68,71 @@ let sliderWidget = {
         rightArrow.addEventListener('click', (e) => {
             e.preventDefault();
             this.stopAnimation();
-            removeStyle(this.settings.slideIndex, this.settings.slides);
-            this.settings.slideIndex = increaseIndex(this.settings.slideIndex, this.settings.slides.length);
+            this.removeStyle();
+            this.increaseIndex();
             this.initializeSlides();
             this.startAnimation();
-        })    
+        })
+    },
+
+    // CHECK if slideIndex == dotIndex
+    //       TRUE changes icon from uncheked to CHECKED
+    //       ELSE changes icon from checked to UNCHECKED
+    checkCircle: function(){
+        const dots = document.querySelectorAll('.slider-dot  i');
+    
+        dots.forEach((dot, dotIndex) => {
+            if(dotIndex === this.settings.slideIndex){
+                dot.classList.remove("icon-radio-unchecked");
+                dot.classList.add("icon-radio-checked2");
+            } else {
+                dot.classList.remove("icon-radio-checked2");
+                dot.classList.add("icon-radio-unchecked");
+            };
+        });
+    },
+
+    // FIND slide that matches index
+    // SHOW slide
+    // ADD animation and animation duration
+    addSlideStyle : function(){
+        const slide = this.settings.slides[this.settings.slideIndex];
+
+        slide.style.display = "block";
+        slide.style.animationName = "slideRightFadeIn";
+        slide.style.animationDuration =`${this.settings.animDuration/1000}s`;
+    },
+
+    // FIND slide that matches index
+    // REMOVE slide
+    removeStyle : function() {
+        const slide = this.settings.slides[this.settings.slideIndex];
+        slide.style.display = "none";
+    },
+
+    // RETURN index increased by 1
+    //          then index is less then slides array length
+    // ELSE return 0 ---> then index = last slide index
+    increaseIndex : function(){
+        if (this.settings.slideIndex < this.settings.slides.length-1){
+            ++this.settings.slideIndex;
+        } else {
+            this.settings.slideIndex  = 0;
+        };
+    },
+
+    // RETURN index decreased by 1 
+    //        then index is greater then 0  
+    //        and less then slides array length
+    // ELSE return last element index ---> then index = 0
+    decreaseIndex : function(){
+        if(this.settings.slideIndex > 0 && this.settings.slideIndex < this.settings.slides.length-1){
+            --this.settings.slideIndex;
+        } else {
+            this.settings.slideIndex = this.settings.slides.length-1;
+        };
     }
+
 }  
 
 
