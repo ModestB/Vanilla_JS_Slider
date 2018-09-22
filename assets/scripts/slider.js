@@ -20,13 +20,18 @@ let sliderWidget = {
 
     // MAIN sliderWidget controller
     init: function(){
-        mainSettings = this.settings;
+       
+        if(this.settings.animOn){
+            this.stopAnimation();
+            this.removeStyle();
+        } 
         this.initializeSlides();
         this.startAnimation();
         this.initializeButton();
     },
 
     initializeSlides: function(){
+        mainSettings = this.settings;
         this.addSlideStyle();
         this.checkCircle();
     },

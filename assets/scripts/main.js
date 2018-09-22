@@ -70,3 +70,47 @@ function closeAllSelect(elmnt) {
 /*if the user clicks anywhere outside the select box,
 then close all select boxes:*/
 document.addEventListener("click", closeAllSelect);
+
+function writeAnimationSpeed(outputValue, outputEle){
+  const output = document.querySelector(outputEle)
+  output.innerHTML = `${outputValue}s`;
+}
+
+function getNumberRange(inputEle, outputEle){
+  const input= document.querySelector(inputEle)
+  // Initialize
+  writeAnimationSpeed(input.value, outputEle)
+
+  input.addEventListener('input', () => {
+    writeAnimationSpeed(input.value, outputEle)
+  })
+  return input.value;
+}
+
+
+
+function getAnimation(){
+  const animation = document.querySelector('.select-selected')
+  return animation.innerHTML;
+}
+
+function getSettings(){
+  const applyButton = document.querySelector('.controller-button');
+  let animSpeed, slideSpeed, animName;
+  applyButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    animSpeed = getNumberRange('#anim-speed', '#anim-speed-out');
+    slideSpeed = getNumberRange('#slide-speed', '#slide-speed-out');
+    animName = getAnimation();
+
+    sliderWidget.settings.animDuration = animSpeed * 1000;
+    sliderWidget.settings.mainCycleInterval = slideSpeed * 1000;
+    sliderWidget.settings.slideAnimStyle = animName;
+
+    sliderWidget.init();
+  })
+}
+
+getNumberRange('#anim-speed', '#anim-speed-out')
+getNumberRange('#slide-speed', '#slide-speed-out')
+getSettings()
