@@ -1,12 +1,20 @@
+// ANIMATIONS:
+// fadeIn
+// slideLeft
+// slideRight
+// slideLeftFadeIn
+// slideRightFadeIn
+
 let sliderWidget = {
 
     settings: {
         slideIndex : 0,
         slides : document.getElementsByClassName("slide"),
-        animDuration : 1000,
+        animDuration : 5000,
         animOn: false,
         mainCycle : () => {},
         mainCycleInterval: 10000,
+        slideAnimStyle: 'slideLeft'
 
     },
 
@@ -99,7 +107,7 @@ let sliderWidget = {
         const slide = this.settings.slides[this.settings.slideIndex];
 
         slide.style.display = "block";
-        slide.style.animationName = "slideRightFadeIn";
+        slide.style.animationName = this.settings.slideAnimStyle;
         slide.style.animationDuration =`${this.settings.animDuration/1000}s`;
     },
 

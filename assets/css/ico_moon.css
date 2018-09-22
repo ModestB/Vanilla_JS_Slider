@@ -25,6 +25,13 @@
 }
 
 .icon-radio-checked2,
+.icon-radio-unchecked,
+.icon-circle-right,
+.icon-circle-left{
+  color: #092834;
+}
+
+.icon-radio-checked2,
 .icon-radio-unchecked{
   font-size: 0.8rem;
   margin: 2px;

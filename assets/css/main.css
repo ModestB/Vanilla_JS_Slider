@@ -1,3 +1,9 @@
+/* COLOR SCHEME
+#F0F7D4
+#B2D732
+#66B032
+#347B98
+#092834 */
 *{
     margin: 0;
     padding: 0;
@@ -14,14 +20,8 @@ a{
 }
 .container-fluid{
     width: 100%;
-    background-color: #99ffb3;
-}
-
-.container{
-    width: 80%;
-    min-width: 400px;
-    background-color: #cc99ff;
-}
+    background-color: #F0F7D4;
+} 
 
 .flex-container{
     display: flex;
@@ -43,10 +43,25 @@ a{
 
 .slide-container{
     padding: 10px 25px;
+    width: 80%;
+    min-width: 400px;
+    background-color: #B2D732;
+    border-radius: 10px;
+}
+.inner-slide{
+  width: 100%;
+  justify-content: space-between;
 }
 .slide{
-    display: none;
     position: relative;
+    width: 90%;
+    display: none;
+}
+
+.left-arrow,
+.right-arrow{
+  position: relative;
+  z-index: 1; 
 }
 
 
@@ -57,15 +72,6 @@ a{
     to {
       opacity: 1;
     }
-  }
-
-  @keyframes fadeOut{
-    from {
-        opacity: 1;
-      }
-      to {
-        opacity: 0;
-      }
   }
 
   @keyframes slideLeft {
