@@ -1,148 +1,72 @@
-// ANIMATIONS:
-// fadeIn
-// slideLeft
-// slideRight
-// slideLeftFadeIn
-// slideRightFadeIn
-
-let sliderWidget = {
-
-    settings: {
-        slideIndex : 0,
-        slides : document.getElementsByClassName("slide"),
-        animDuration : 5000,
-        animOn: false,
-        mainCycle : () => {},
-        mainCycleInterval: 10000,
-        slideAnimStyle: 'slideLeft'
-
-    },
-
-    // MAIN sliderWidget controller
-    init: function(){
-        mainSettings = this.settings;
-        this.initializeSlides();
-        this.startAnimation();
-        this.initializeButton();
-    },
-
-    initializeSlides: function(){
-        this.addSlideStyle();
-        this.checkCircle();
-    },
-
-    startAnimation: function(){
-        this.settings.animOn = true;
-        
-        this.settings.mainCycle = setInterval(() => {
-            this.removeStyle();
-            this.increaseIndex()                  
-            this.addSlideStyle();
-            this.checkCircle();
-        }, this.settings.mainCycleInterval)
-    },
-
-    stopAnimation: function() {
-        this.settings.animOn = false;
-        clearInterval(this.settings.mainCycle);
-    },
-
-    initializeButton : function() {
-        dots = document.querySelectorAll('.slider-dot');
-        leftArrow = document.querySelector('.left-arrow');
-        rightArrow = document.querySelector('.right-arrow');
-
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.stopAnimation();
-                this.removeStyle();
-                this.settings.slideIndex = index;
-                this.initializeSlides();
-                this.startAnimation();
-            })
-        })
-
-        leftArrow.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.stopAnimation();
-            this.removeStyle();
-            this.decreaseIndex();
-            this.initializeSlides();
-            this.startAnimation();
-
-        })
-
-        rightArrow.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.stopAnimation();
-            this.removeStyle();
-            this.increaseIndex();
-            this.initializeSlides();
-            this.startAnimation();
-        })
-    },
-
-    // CHECK if slideIndex == dotIndex
-    //       TRUE changes icon from uncheked to CHECKED
-    //       ELSE changes icon from checked to UNCHECKED
-    checkCircle: function(){
-        const dots = document.querySelectorAll('.slider-dot  i');
-    
-        dots.forEach((dot, dotIndex) => {
-            if(dotIndex === this.settings.slideIndex){
-                dot.classList.remove("icon-radio-unchecked");
-                dot.classList.add("icon-radio-checked2");
-            } else {
-                dot.classList.remove("icon-radio-checked2");
-                dot.classList.add("icon-radio-unchecked");
-            };
-        });
-    },
-
-    // FIND slide that matches index
-    // SHOW slide
-    // ADD animation and animation duration
-    addSlideStyle : function(){
-        const slide = this.settings.slides[this.settings.slideIndex];
-
-        slide.style.display = "block";
-        slide.style.animationName = this.settings.slideAnimStyle;
-        slide.style.animationDuration =`${this.settings.animDuration/1000}s`;
-    },
-
-    // FIND slide that matches index
-    // REMOVE slide
-    removeStyle : function() {
-        const slide = this.settings.slides[this.settings.slideIndex];
-        slide.style.display = "none";
-    },
-
-    // RETURN index increased by 1
-    //          then index is less then slides array length
-    // ELSE return 0 ---> then index = last slide index
-    increaseIndex : function(){
-        if (this.settings.slideIndex < this.settings.slides.length-1){
-            ++this.settings.slideIndex;
-        } else {
-            this.settings.slideIndex  = 0;
-        };
-    },
-
-    // RETURN index decreased by 1 
-    //        then index is greater then 0  
-    //        and less then slides array length
-    // ELSE return last element index ---> then index = 0
-    decreaseIndex : function(){
-        if(this.settings.slideIndex > 0 && this.settings.slideIndex < this.settings.slides.length-1){
-            --this.settings.slideIndex;
-        } else {
-            this.settings.slideIndex = this.settings.slides.length-1;
-        };
+var x, i, j, selElmnt, a, b, c;
+/*look for any elements with the class "select-anim":*/
+x = document.getElementsByClassName("select-anim");
+for (i = 0; i < x.length; i++) {
+  selElmnt = x[i].getElementsByTagName("select")[0];
+  /*for each element, create a new DIV that will act as the selected item:*/
+  a = document.createElement("DIV");
+  a.setAttribute("class", "select-selected");
+  a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+  x[i].appendChild(a);
+  /*for each element, create a new DIV that will contain the option list:*/
+  b = document.createElement("DIV");
+  b.setAttribute("class", "select-items select-hide");
+  for (j = 1; j < selElmnt.length; j++) {
+    /*for each option in the original select element,
+    create a new DIV that will act as an option item:*/
+    c = document.createElement("DIV");
+    c.innerHTML = selElmnt.options[j].innerHTML;
+    c.addEventListener("click", function(e) {
+        /*when an item is clicked, update the original select box,
+        and the selected item:*/
+        var y, i, k, s, h;
+        s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+        h = this.parentNode.previousSibling;
+        for (i = 0; i < s.length; i++) {
+          if (s.options[i].innerHTML == this.innerHTML) {
+            s.selectedIndex = i;
+            h.innerHTML = this.innerHTML;
+            y = this.parentNode.getElementsByClassName("same-as-selected");
+            for (k = 0; k < y.length; k++) {
+              y[k].removeAttribute("class");
+            }
+            this.setAttribute("class", "same-as-selected");
+            break;
+          }
+        }
+        h.click();
+    });
+    b.appendChild(c);
+  }
+  x[i].appendChild(b);
+  a.addEventListener("click", function(e) {
+      /*when the select box is clicked, close any other select boxes,
+      and open/close the current select box:*/
+      e.stopPropagation();
+      closeAllSelect(this);
+      this.nextSibling.classList.toggle("select-hide");
+      this.classList.toggle("select-arrow-active");
+  });
+}
+function closeAllSelect(elmnt) {
+  /*a function that will close all select boxes in the document,
+  except the current select box:*/
+  var x, y, i, arrNo = [];
+  x = document.getElementsByClassName("select-items");
+  y = document.getElementsByClassName("select-selected");
+  for (i = 0; i < y.length; i++) {
+    if (elmnt == y[i]) {
+      arrNo.push(i)
+    } else {
+      y[i].classList.remove("select-arrow-active");
     }
-
-}  
-
-
-
-sliderWidget.init();
+  }
+  for (i = 0; i < x.length; i++) {
+    if (arrNo.indexOf(i)) {
+      x[i].classList.add("select-hide");
+    }
+  }
+}
+/*if the user clicks anywhere outside the select box,
+then close all select boxes:*/
+document.addEventListener("click", closeAllSelect);

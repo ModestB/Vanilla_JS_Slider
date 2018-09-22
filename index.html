@@ -6,11 +6,49 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Vanilla JS slider</title>
 
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&amp;subset=latin-ext" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/ico_moon.css">
 </head>
 <body>
-    <div class="container-fluid height-100 flex-container">
+    <div class="container-fluid height-100 flex-container flex--column">
+
+        <div class="controller flex-container flex--column">
+            <h1>Choose settings</h1>
+
+            <div class="flex-container flex--between align--start container-fluid">
+                <div class="col-1-3 flex-container flex--column">
+                    <h4>Animation</h4>
+                    <div class="select-anim">
+                        <select>
+                            <option value="0">fadeIn</option>
+                            <option value="1">slideLeft</option>
+                            <option value="2">slideRight</option>
+                            <option value="3">slideLeftFadeIn</option>
+                            <option value="4">slideRightFadeIn</option>
+                        </select>    
+                    </div>
+                </div>
+               
+                <div class="col-1-3  flex-container flex--column">
+                    <h4>Animation speed</h4>
+                    <div class="number-slide">
+                        <input type="range" min="1" max="60" value="1" class="number-input">
+                    </div>
+                    <p>2</p>
+                </div>
+
+                <div class="col-1-3  flex-container flex--column">
+                    <h4>Slide speed</h4>
+                    <div class="number-slide">
+                        <input type="range" min="1" max="60" value="1" class="number-input">
+                    </div>
+                    <p>2</p>
+                </div>
+
+            </div>
+
+        </div>
         <div class="slide-container flex-container flex--column">
             <div class="inner-slide flex-container">
                 <a href="#" class="left-arrow"><i class="icon-circle-left"></i></a>
@@ -67,6 +105,7 @@
             </div>
         </div>
 </div>
+    <script src="assets/scripts/slider.js"></script>
     <script src="assets/scripts/main.js"></script>
 </body>
 </html>
