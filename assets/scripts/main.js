@@ -76,15 +76,18 @@ function writeAnimationSpeed(outputValue, outputEle){
   output.innerHTML = `${outputValue}s`;
 }
 
-function getNumberRange(inputEle, outputEle){
+// OPTIONAL timeCorrection helps to correct input value to desirable value
+// Ex. input interval  1 - 100
+// To convert input to 0.1s to 10s you need to use timeCorrection = 10
+function getNumberRange(inputEle, outputEle, timeCorrection = 1){
   const input= document.querySelector(inputEle)
   // Initialize
-  writeAnimationSpeed(input.value, outputEle)
+  writeAnimationSpeed(input.value/timeCorrection, outputEle)
 
   input.addEventListener('input', () => {
-    writeAnimationSpeed(input.value, outputEle)
+    writeAnimationSpeed(input.value/timeCorrection, outputEle)
   })
-  return input.value;
+  return input.value/timeCorrection;
 }
 
 
@@ -99,7 +102,7 @@ function getSettings(){
   let animSpeed, slideSpeed, animName;
   applyButton.addEventListener('click', (e) => {
     e.preventDefault();
-    animSpeed = getNumberRange('#anim-speed', '#anim-speed-out');
+    animSpeed = getNumberRange('#anim-speed', '#anim-speed-out', 10);
     slideSpeed = getNumberRange('#slide-speed', '#slide-speed-out');
     animName = getAnimation();
 
@@ -111,6 +114,6 @@ function getSettings(){
   })
 }
 
-getNumberRange('#anim-speed', '#anim-speed-out')
+getNumberRange('#anim-speed', '#anim-speed-out', 10)
 getNumberRange('#slide-speed', '#slide-speed-out')
 getSettings()

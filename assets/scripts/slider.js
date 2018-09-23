@@ -19,19 +19,22 @@ let sliderWidget = {
     },
 
     // MAIN sliderWidget controller
-    init: function(){
-       
+    init: function(){  
+        console.log(this.settings.animOn)
         if(this.settings.animOn){
             this.stopAnimation();
             this.removeStyle();
-        } 
-        this.initializeSlides();
-        this.startAnimation();
-        this.initializeButton();
+            this.initializeSlides();
+            this.startAnimation();
+        } else{
+            this.initializeSlides();
+            this.startAnimation();
+            this.initializeButton();
+        }
     },
 
     initializeSlides: function(){
-        mainSettings = this.settings;
+        this.settings.animOn = true;
         this.addSlideStyle();
         this.checkCircle();
     },
@@ -110,6 +113,8 @@ let sliderWidget = {
     // ADD animation and animation duration
     addSlideStyle : function(){
         const slide = this.settings.slides[this.settings.slideIndex];
+        // Forces reflow between the animations then reruning same animation
+        slide.offsetWidth;
 
         slide.style.display = "block";
         slide.style.animationName = this.settings.slideAnimStyle;
