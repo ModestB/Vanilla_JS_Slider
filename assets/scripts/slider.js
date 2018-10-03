@@ -14,7 +14,7 @@ let sliderWidget = {
         animOn: false,
         mainCycle : () => {},
         mainCycleInterval: 10000,
-        slideAnimStyle: 'slideLeft'
+        slideAnimStyle: 'fadeIn'
 
     },
 

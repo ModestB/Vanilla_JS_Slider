@@ -51,6 +51,27 @@ a{
 .align--start{
   align-items: flex-start;
 }
+
+header.flex-container{
+  justify-content: flex-start;
+}
+header{
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+header a{
+  margin-top: 10px;
+}
+header a p {
+  font-size: 14px;
+  color: #000;
+}
+
+header a p, img {
+  margin-left: 10px;
+}
+
 .controller{
   justify-content: flex-start;
   background-color: #347B98;
@@ -195,22 +216,6 @@ h1{
 .right-arrow{
   position: relative;
   z-index: 1; 
-}
-
-footer.flex-container{
-  justify-content: flex-end;
-}
-footer{
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-}
-footer p {
-  font-size: 14px;
-}
-
-footer p, a{
-  margin-right: 10px;
 }
 
 @keyframes fadeIn {
