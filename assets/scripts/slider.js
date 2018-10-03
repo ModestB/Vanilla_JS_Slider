@@ -11,7 +11,8 @@ let sliderWidget = {
         slideIndex : 0,
         slides : document.getElementsByClassName("slide"),
         animDuration : 5000,
-        animOn: false,
+        init: false,
+        carousel: false,
         mainCycle : () => {},
         mainCycleInterval: 10000,
         slideAnimStyle: 'fadeIn'
@@ -19,28 +20,34 @@ let sliderWidget = {
     },
 
     // MAIN sliderWidget controller
-    init: function(){  
-        console.log(this.settings.animOn)
-        if(this.settings.animOn){
-            this.stopAnimation();
-            this.removeStyle();
-            this.initializeSlides();
-            this.startAnimation();
-        } else{
-            this.initializeSlides();
-            this.startAnimation();
+    init: function(){
+        if(!this.settings.init){
             this.initializeButton();
+        }
+        
+        if(this.settings.carousel){
+            if(this.settings.init){
+                this.stopAnimation();
+                this.removeStyle();
+                this.initializeSlides();
+                this.startAnimation();
+            } else{
+                this.initializeSlides();
+                this.startAnimation();
+            }
+        } else {
+            this.initializeSlides();      
         }
     },
 
     initializeSlides: function(){
-        this.settings.animOn = true;
+        this.settings.init = true;
         this.addSlideStyle();
         this.checkCircle();
     },
 
     startAnimation: function(){
-        this.settings.animOn = true;
+        this.settings.init = true;
         
         this.settings.mainCycle = setInterval(() => {
             this.removeStyle();
@@ -51,7 +58,7 @@ let sliderWidget = {
     },
 
     stopAnimation: function() {
-        this.settings.animOn = false;
+        this.settings.init = false;
         clearInterval(this.settings.mainCycle);
     },
 
@@ -63,31 +70,51 @@ let sliderWidget = {
         dots.forEach((dot, index) => {
             dot.addEventListener('click', (e) => {
                 e.preventDefault();
-                this.stopAnimation();
-                this.removeStyle();
-                this.settings.slideIndex = index;
-                this.initializeSlides();
-                this.startAnimation();
+                if(this.settings.carousel){
+                    this.stopAnimation();
+                    this.removeStyle();
+                    this.settings.slideIndex = index;
+                    this.initializeSlides();
+                    this.startAnimation();
+                } else{
+                    this.removeStyle();
+                    this.settings.slideIndex = index;
+                    this.initializeSlides();
+                }
+ 
             })
         })
 
         leftArrow.addEventListener('click', (e) => {
             e.preventDefault();
-            this.stopAnimation();
-            this.removeStyle();
-            this.decreaseIndex();
-            this.initializeSlides();
-            this.startAnimation();
+            if(this.settings.carousel){
+                this.stopAnimation();
+                this.removeStyle();
+                this.decreaseIndex();
+                this.initializeSlides();
+                this.startAnimation();
+            } else {
+                this.removeStyle();
+                this.decreaseIndex();
+                this.initializeSlides();
+            }
 
         })
 
         rightArrow.addEventListener('click', (e) => {
             e.preventDefault();
-            this.stopAnimation();
-            this.removeStyle();
-            this.increaseIndex();
-            this.initializeSlides();
-            this.startAnimation();
+            if(this.settings.carousel) {
+                this.stopAnimation();
+                this.removeStyle();
+                this.increaseIndex();
+                this.initializeSlides();
+                this.startAnimation();
+            } else{
+                this.removeStyle();
+                this.increaseIndex();
+                this.initializeSlides();
+            }
+
         })
     },
 
@@ -132,6 +159,7 @@ let sliderWidget = {
     //          then index is less then slides array length
     // ELSE return 0 ---> then index = last slide index
     increaseIndex : function(){
+        console.log("increase")
         if (this.settings.slideIndex < this.settings.slides.length-1){
             ++this.settings.slideIndex;
         } else {
@@ -144,7 +172,7 @@ let sliderWidget = {
     //        and less then slides array length
     // ELSE return last element index ---> then index = 0
     decreaseIndex : function(){
-        if(this.settings.slideIndex > 0 && this.settings.slideIndex < this.settings.slides.length-1){
+        if(this.settings.slideIndex > 0 && this.settings.slideIndex <= this.settings.slides.length-1){
             --this.settings.slideIndex;
         } else {
             this.settings.slideIndex = this.settings.slides.length-1;
