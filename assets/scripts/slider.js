@@ -12,7 +12,7 @@ let sliderWidget = {
         slides : document.getElementsByClassName("slide"),
         animDuration : 5000,
         init: false,
-        carousel: false,
+        carousel: true,
         mainCycle : () => {},
         mainCycleInterval: 10000,
         slideAnimStyle: 'fadeIn'
