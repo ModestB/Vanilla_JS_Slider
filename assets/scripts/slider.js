@@ -36,6 +36,7 @@ let sliderWidget = {
                 this.startAnimation();
             }
         } else {
+            this.stopAnimation();
             this.initializeSlides();      
         }
     },

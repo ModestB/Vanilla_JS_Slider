@@ -105,6 +105,20 @@ function getAnimation(){
   return animation.innerHTML;
 }
 
+// CHECKS witch mode is selected CAROUSEL OR SLIDER
+// IF CAROUSEL is selected (checkbox is checked) returns TRUE
+// IF SLIDER is selected (checkbox is unchecked) returns FALSE 
+function getMode() {
+  const modeCheckBox = document.querySelector('.switch-controller input');
+  let carouselMode = true;
+
+  if(!modeCheckBox.checked){
+    carouselMode = false;
+  }
+
+  return carouselMode;
+}
+
 
 function getSettings(){
   return {
@@ -123,6 +137,8 @@ function setSettings(){
     sliderWidget.settings.animDuration = settings.animSpeed;
     sliderWidget.settings.mainCycleInterval = settings.slideSpeed;
     sliderWidget.settings.slideAnimStyle = settings.animName;
+    sliderWidget.settings.carousel = getMode();
+   
 
     sliderWidget.init();
   });
